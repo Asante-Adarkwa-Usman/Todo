@@ -17,7 +17,7 @@ class TodoApp extends StatelessWidget {
       title: 'Todo App',
       theme: ThemeData(
         primarySwatch: Colors.pink,
-        primaryColor: Colors.pink,
+        primaryColor: Colors.blueGrey[100],
       ),
       home: const HomeView(),
     );
