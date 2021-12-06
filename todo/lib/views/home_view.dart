@@ -4,6 +4,7 @@ import 'package:todo/views/create_todo_view.dart';
 
 import 'custom_widgets/padding_with_text.dart';
 import 'custom_widgets/search_delegate.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -12,30 +13,174 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(249, 250, 255, 1),
-      // drawer: const Drawer(
+      // drawer: Drawer(
       //   elevation: 0,
+      //   child: Container(
+      //     color: const Color.fromRGBO(14, 31, 85, 1),
+      //     child: Column(
+      //       children: [
+      //         Container(
+      //           alignment: Alignment.centerRight,
+      //           margin: const EdgeInsets.fromLTRB(0, 60, 20, 0),
+      //           child: SizedBox(
+      //             height: 55,
+      //             width: 57,
+      //             child: InkWell(
+      //               onTap: () {
+      //                 Navigator.of(context).pop();
+      //               },
+      //               child: const Card(
+      //                 color: Color.fromRGBO(14, 31, 85, 1),
+      //                 shape: CircleBorder(
+      //                   side: BorderSide(
+      //                     color: Colors.white,
+      //                     width: 2,
+      //                   ),
+      //                 ),
+      //                 child: Icon(
+      //                   Icons.arrow_back_ios,
+      //                   color: Colors.white,
+      //                   size: 24,
+      //                 ),
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //         const SizedBox(
+      //           width: 120,
+      //           height: 120,
+      //           child: Card(
+      //             elevation: 0,
+      //             shape: CircleBorder(
+      //               side: BorderSide(
+      //                 color: Colors.pinkAccent,
+      //                 width: 3,
+      //               ),
+      //             ),
+      //             child: CircleAvatar(
+      //               backgroundColor: Colors.white,
+      //               radius: 50,
+      //               backgroundImage: AssetImage('assets/images/user.jpeg'),
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
       // ),
+      drawer: Drawer(
+        child: Container(
+          color: const Color.fromRGBO(14, 31, 85, 1),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topRight,
+                margin: const EdgeInsets.fromLTRB(0, 50, 20, 0),
+                child: SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: InkWell(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Card(
+                      color: Color.fromRGBO(14, 31, 85, 1),
+                      shape: CircleBorder(
+                        side: BorderSide(width: 1, color: Colors.white),
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        size: 26,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              CircularPercentIndicator(
+                radius: 120,
+                progressColor: Colors.pink,
+                backgroundColor: const Color.fromRGBO(59, 74, 123, 1),
+                animation: false,
+                lineWidth: 3,
+                percent: 0.4,
+                center: const CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.white,
+                  backgroundImage: AssetImage('assets/images/user.jpeg'),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 40),
+                child: const Text('Asante \nUsman',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(80, 40, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const RowWithIconAndText(
+                        text: 'Templates',
+                        icon: Icons.bookmark_border_outlined),
+                    const RowWithIconAndText(
+                        text: 'Categories', icon: Icons.grid_view_outlined),
+                    const RowWithIconAndText(
+                        text: 'Analytics', icon: Icons.pie_chart_outline),
+                    const RowWithIconAndText(
+                        text: 'Settings', icon: Icons.settings_outlined),
+
+                    //Showing todo progress graph
+                    Container(
+                        margin: const EdgeInsets.fromLTRB(0, 60, 50, 20),
+                        child: Image.asset('assets/images/graph.png')),
+
+                    Column(
+                      children: const [
+                        Text(
+                          'Good',
+                          style: TextStyle(
+                              color: Color.fromRGBO(164, 169, 199, 1),
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'Consistency',
+                          style: TextStyle(
+                              color: Color.fromRGBO(164, 169, 199, 1),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(249, 250, 255, 1),
         elevation: 0,
-        leading: const IconButton(
-            //tooltip: 'Shows the drawer',
-            onPressed: null,
-            icon: Icon(Icons.menu,
-                size: 26, color: Color.fromRGBO(171, 158, 158, 1))),
+        iconTheme: const IconThemeData(color: Color.fromRGBO(171, 158, 158, 1)),
         actions: [
           IconButton(
             onPressed: () {
               showSearch(
                   context: context, delegate: MySearchDelegate(), query: '');
             },
-            icon: const Icon(Icons.search,
-                size: 26, color: Color.fromRGBO(171, 158, 158, 1)),
+            icon: const Icon(Icons.search, size: 26),
           ),
           const IconButton(
             onPressed: null,
-            icon: Icon(Icons.notifications_outlined,
-                size: 26, color: Color.fromRGBO(171, 158, 158, 1)),
+            icon: Icon(Icons.notifications_outlined, size: 26),
           ),
         ],
       ),
@@ -90,24 +235,53 @@ class HomeView extends StatelessWidget {
               ),
               child: ListView.separated(
                   itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      elevation: 0,
-                      child: Row(
-                        children: const [
-                          Radio(
-                            value: '',
-                            groupValue: '',
-                            onChanged: null,
-                            activeColor: Colors.pink,
+                    return Dismissible(
+                      key: Key(index.toString()),
+                      secondaryBackground: const Material(
+                        color: Colors.red,
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                      ),
+                      background: const Material(
+                        color: Colors.green,
+                        child: Icon(
+                          Icons.check_circle,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onDismissed: (dismissedDirection) {
+                        SnackBar snackBar = const SnackBar(
+                          content: Text('Todo has been deleted!',
+                              style: TextStyle(
+                                color: Colors.green,
+                              )),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
+                      child: SizedBox(
+                        height: 80,
+                        child: Card(
+                          elevation: 0,
+                          child: Row(
+                            children: const [
+                              Radio(
+                                value: '',
+                                groupValue: '',
+                                onChanged: null,
+                                activeColor: Colors.pink,
+                              ),
+                              Text(
+                                'Have a date with Sandra',
+                                style: TextStyle(
+                                    //decoration: TextDecoration.lineThrough,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
                           ),
-                          Text(
-                            'Have a date with Sandra',
-                            style: TextStyle(
-                                //decoration: TextDecoration.lineThrough,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
+                        ),
                       ),
                     );
                   },
@@ -158,6 +332,39 @@ class HomeView extends StatelessWidget {
       //   },
       //   child: const Icon(Icons.add, size: 30),
       // ),
+    );
+  }
+}
+
+class RowWithIconAndText extends StatelessWidget {
+  final IconData? icon;
+  final String? text;
+  const RowWithIconAndText({Key? key, required this.icon, required this.text})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 30,
+          color: const Color.fromRGBO(233, 235, 253, 1),
+        ),
+        const SizedBox(
+          width: 25,
+        ),
+        Text(
+          text.toString(),
+          style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Color.fromRGBO(233, 235, 253, 1)),
+        ),
+        const SizedBox(
+          height: 35,
+        )
+      ],
     );
   }
 }
