@@ -4,7 +4,6 @@ import 'package:todo/views/create_todo_view.dart';
 
 import 'custom_widgets/padding_with_text.dart';
 import 'custom_widgets/search_delegate.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -13,61 +12,6 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(249, 250, 255, 1),
-      // drawer: Drawer(
-      //   elevation: 0,
-      //   child: Container(
-      //     color: const Color.fromRGBO(14, 31, 85, 1),
-      //     child: Column(
-      //       children: [
-      //         Container(
-      //           alignment: Alignment.centerRight,
-      //           margin: const EdgeInsets.fromLTRB(0, 60, 20, 0),
-      //           child: SizedBox(
-      //             height: 55,
-      //             width: 57,
-      //             child: InkWell(
-      //               onTap: () {
-      //                 Navigator.of(context).pop();
-      //               },
-      //               child: const Card(
-      //                 color: Color.fromRGBO(14, 31, 85, 1),
-      //                 shape: CircleBorder(
-      //                   side: BorderSide(
-      //                     color: Colors.white,
-      //                     width: 2,
-      //                   ),
-      //                 ),
-      //                 child: Icon(
-      //                   Icons.arrow_back_ios,
-      //                   color: Colors.white,
-      //                   size: 24,
-      //                 ),
-      //               ),
-      //             ),
-      //           ),
-      //         ),
-      //         const SizedBox(
-      //           width: 120,
-      //           height: 120,
-      //           child: Card(
-      //             elevation: 0,
-      //             shape: CircleBorder(
-      //               side: BorderSide(
-      //                 color: Colors.pinkAccent,
-      //                 width: 3,
-      //               ),
-      //             ),
-      //             child: CircleAvatar(
-      //               backgroundColor: Colors.white,
-      //               radius: 50,
-      //               backgroundImage: AssetImage('assets/images/user.jpeg'),
-      //             ),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
       drawer: Drawer(
         child: Container(
           color: const Color.fromRGBO(14, 31, 85, 1),
@@ -165,7 +109,6 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(249, 250, 255, 1),
         elevation: 0,
@@ -289,23 +232,6 @@ class HomeView extends StatelessWidget {
                       const SizedBox(height: 5),
                   itemCount: 15),
             ),
-
-            // ConstrainedBox(
-            //     constraints: BoxConstraints(
-            //         maxHeight: MediaQuery.of(context).size.height),
-            //     // child: ListView.builder(
-            //     //   itemCount: 20,
-            //     //   itemBuilder: (context, index) => const Tasks(),
-            //     // ),
-            //     child: ListView.separated(
-            //         itemBuilder: (BuildContext context, int index) {
-            //           return const Tasks();
-            //         },
-            //         separatorBuilder: (BuildContext context, int index) =>
-            //             const SizedBox(
-            //               height: 10,
-            //             ),
-            //         itemCount: 20)),
           ],
         ),
       ),
@@ -320,18 +246,6 @@ class HomeView extends StatelessWidget {
           size: 28,
         ),
       ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: const Color.fromRGBO(26, 106, 237, 1),
-      //   onPressed: () {
-      //     Navigator.of(context).push(
-      //       MaterialPageRoute(
-      //         builder: (context) => const CreateTodoView(),
-      //       ),
-      //     );
-      //   },
-      //   child: const Icon(Icons.add, size: 30),
-      // ),
     );
   }
 }
