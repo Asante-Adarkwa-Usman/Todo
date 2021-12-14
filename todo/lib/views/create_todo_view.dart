@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 // import 'package:unicons/unicons.dart';
 
-class CreateTodoView extends StatelessWidget {
+class CreateTodoView extends StatefulWidget {
   const CreateTodoView({Key? key}) : super(key: key);
 
+  @override
+  State<CreateTodoView> createState() => _CreateTodoViewState();
+}
+
+class _CreateTodoViewState extends State<CreateTodoView> {
+  String _value = "Select a  todo category";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,34 +45,119 @@ class CreateTodoView extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(25, 150, 25, 50),
-              child: TextField(
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: Colors.black,
+            Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 80, 20, 20),
+                  child: TextField(
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      color: Colors.black,
+                    ),
+                    cursorHeight: 30,
+                    cursorColor: const Color.fromRGBO(196, 196, 196, 1),
+                    decoration: InputDecoration(
+                      hintText: 'Enter new todo',
+                      hintStyle: const TextStyle(
+                          fontSize: 26,
+                          color: Color.fromRGBO(148, 156, 202, 1),
+                          fontWeight: FontWeight.w400),
+                      fillColor: Colors.white,
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade300,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                    //prefixIcon: Icon(Icons.person_pin_circle)
+                  ),
                 ),
-                cursorHeight: 30,
-                cursorColor: const Color.fromRGBO(196, 196, 196, 1),
-                decoration: InputDecoration(
-                  hintText: 'Enter new todo',
-                  hintStyle: const TextStyle(
-                      fontSize: 26,
-                      color: Color.fromRGBO(148, 156, 202, 1),
-                      fontWeight: FontWeight.w400),
-                  fillColor: Colors.white,
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey.shade300,
-                        width: 1,
+                //Popup menu button
+                // PopupMenuButton(
+                //     color: const Color.fromRGBO(255, 255, 255, 0.9),
+                //     initialValue: 'Personal',
+                //     onSelected: (value) {
+                //       setState(() {
+                //         _value = (value.toString());
+                //       });
+                //     },
+                //     child: Padding(
+                //       padding: const EdgeInsets.symmetric(
+                //           horizontal: 10, vertical: 20),
+                //       child: Row(
+                //         children: [
+                //           Text(_value, style: const TextStyle(fontSize: 30)),
+                //           const Icon(Icons.arrow_drop_down_outlined, size: 30)
+                //         ],
+                //       ),
+                //     ),
+                //     itemBuilder: (context) => const [
+                //           PopupMenuItem(
+                //             child: Text("Personal"),
+                //             value: 'Personal',
+                //           ),
+                //           PopupMenuItem(
+                //             child: Text("Business"),
+                //             value: 'Business',
+                //           )
+                //         ])
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 0, 0, 20),
+                  child: PopupMenuButton(
+                      color: const Color.fromRGBO(22, 106, 237, 1),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      borderRadius: BorderRadius.circular(30)),
-                ),
-                //prefixIcon: Icon(Icons.person_pin_circle)
-              ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              _value,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromRGBO(148, 156, 202, 1),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                          const Icon(Icons.arrow_drop_down_outlined,
+                              size: 30,
+                              color: Color.fromRGBO(139, 148, 195, 1)),
+                        ],
+                      ),
+                      onSelected: (value) {
+                        setState(() {
+                          _value = value.toString();
+                        });
+                      },
+                      itemBuilder: (BuildContext context) => [
+                            const PopupMenuItem(
+                              child: Text("Personal",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
+                                  )),
+                              value: 'Personal',
+                            ),
+                            const PopupMenuItem(
+                              child: Text("Business",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
+                                  )),
+                              value: 'Business',
+                            ),
+                          ]),
+                )
+              ],
             ),
+
             Row(
               children: [
                 Container(
