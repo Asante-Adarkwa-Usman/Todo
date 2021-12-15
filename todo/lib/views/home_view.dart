@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:todo/controller/todo_controller.dart';
 import 'package:todo/views/create_todo_view.dart';
-
 import 'custom_widgets/padding_with_text.dart';
 import 'custom_widgets/search_delegate.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final TodoController _todoController = TodoController();
 
   @override
   Widget build(BuildContext context) {
@@ -176,61 +183,79 @@ class HomeView extends StatelessWidget {
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height,
               ),
-              child: ListView.separated(
-                  itemBuilder: (BuildContext context, int index) {
-                    return Dismissible(
-                      key: Key(index.toString()),
-                      secondaryBackground: const Material(
-                        color: Colors.red,
-                        child: Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                        ),
-                      ),
-                      background: const Material(
-                        color: Colors.green,
-                        child: Icon(
-                          Icons.check_circle,
-                          color: Colors.white,
-                        ),
-                      ),
-                      onDismissed: (dismissedDirection) {
-                        SnackBar snackBar = const SnackBar(
-                          content: Text('Todo has been deleted!',
-                              style: TextStyle(
-                                color: Colors.green,
-                              )),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      },
-                      child: SizedBox(
-                        height: 80,
-                        child: Card(
-                          elevation: 0,
-                          child: Row(
-                            children: const [
-                              Radio(
-                                value: '',
-                                groupValue: '',
-                                onChanged: null,
-                                activeColor: Colors.pink,
+              child: FutureBuilder(
+                  future: _todoController.getAllTodos(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting &&
+                        snapshot.data == null) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.data == null) {
+                      return const Text(
+                        'Something went wrong',
+                        style: TextStyle(fontSize: 30),
+                      );
+                    }
+
+                    return ListView.separated(
+                        itemBuilder: (BuildContext context, int index) {
+                          return Dismissible(
+                            key: Key(index.toString()),
+                            secondaryBackground: const Material(
+                              color: Colors.red,
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.white,
                               ),
-                              Text(
-                                'Have a date with Sandra',
-                                style: TextStyle(
-                                    //decoration: TextDecoration.lineThrough,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                            ),
+                            background: const Material(
+                              color: Colors.green,
+                              child: Icon(
+                                Icons.check_circle,
+                                color: Colors.white,
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(height: 5),
-                  itemCount: 15),
+                            ),
+                            onDismissed: (dismissedDirection) {
+                              SnackBar snackBar = const SnackBar(
+                                content: Text('Todo has been deleted!',
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                    )),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            },
+                            child: SizedBox(
+                              height: 80,
+                              child: Card(
+                                elevation: 0,
+                                child: Row(
+                                  children: const [
+                                    Radio(
+                                      value: '',
+                                      groupValue: '',
+                                      onChanged: null,
+                                      activeColor: Colors.pink,
+                                    ),
+                                    Text(
+                                      // snapshot.data[index].todoTitle,
+                                      'Show todoTitle here',
+                                      style: TextStyle(
+                                          //decoration: TextDecoration.lineThrough,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const SizedBox(height: 5),
+                        itemCount: 6); //Pass the lenght here
+                  }),
             ),
           ],
         ),
@@ -249,6 +274,74 @@ class HomeView extends StatelessWidget {
     );
   }
 }
+
+// class TodoTileWidget extends StatelessWidget {
+//   final Datum? todo;
+//   const TodoTileWidget({
+//     this.todo,
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.separated(
+//         itemBuilder: (BuildContext context, int index) {
+//           return Dismissible(
+//             key: Key(index.toString()),
+//             secondaryBackground: const Material(
+//               color: Colors.red,
+//               child: Icon(
+//                 Icons.delete,
+//                 color: Colors.white,
+//               ),
+//             ),
+//             background: const Material(
+//               color: Colors.green,
+//               child: Icon(
+//                 Icons.check_circle,
+//                 color: Colors.white,
+//               ),
+//             ),
+//             onDismissed: (dismissedDirection) {
+//               SnackBar snackBar = const SnackBar(
+//                 content: Text('Todo has been deleted!',
+//                     style: TextStyle(
+//                       color: Colors.green,
+//                     )),
+//               );
+//               ScaffoldMessenger.of(context).showSnackBar(snackBar);
+//             },
+//             child: SizedBox(
+//               height: 80,
+//               child: Card(
+//                 elevation: 0,
+//                 child: Row(
+//                   children: [
+//                     const Radio(
+//                       value: '',
+//                       groupValue: '',
+//                       onChanged: null,
+//                       activeColor: Colors.pink,
+//                     ),
+//                     Text(
+//                       // todo.todoTitle!,
+//                       todo!.todoTitle.toString(),
+//                       style: const TextStyle(
+//                           //decoration: TextDecoration.lineThrough,
+//                           fontSize: 16,
+//                           fontWeight: FontWeight.w400),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           );
+//         },
+//         separatorBuilder: (BuildContext context, int index) =>
+//             const SizedBox(height: 5),
+//         itemCount: 4);
+//   }
+// }
 
 class RowWithIconAndText extends StatelessWidget {
   final IconData? icon;
