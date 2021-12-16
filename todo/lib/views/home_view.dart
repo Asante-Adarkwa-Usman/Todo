@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:todo/controller/todo_controller.dart';
+import 'package:todo/models/todo_model.dart';
 import 'package:todo/views/create_todo_view.dart';
 import 'custom_widgets/padding_with_text.dart';
 import 'custom_widgets/search_delegate.dart';
@@ -179,84 +180,53 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height,
-              ),
-              child: FutureBuilder(
-                  future: _todoController.getAllTodos(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting &&
-                        snapshot.data == null) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.data == null) {
-                      return const Text(
-                        'Something went wrong',
-                        style: TextStyle(fontSize: 30),
-                      );
-                    }
+            FutureBuilder(
+                future: _todoController.getAllTodos(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting &&
+                      snapshot.data == null) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.data == null) {
+                    return const Text(
+                      'Something went wrong',
+                      style: TextStyle(fontSize: 30),
+                    );
+                  }
 
-                    return ListView.separated(
-                        itemBuilder: (BuildContext context, int index) {
-                          return Dismissible(
-                            key: Key(index.toString()),
-                            secondaryBackground: const Material(
-                              color: Colors.red,
-                              child: Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                              ),
-                            ),
-                            background: const Material(
-                              color: Colors.green,
-                              child: Icon(
-                                Icons.check_circle,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onDismissed: (dismissedDirection) {
-                              SnackBar snackBar = const SnackBar(
-                                content: Text('Todo has been deleted!',
-                                    style: TextStyle(
-                                      color: Colors.green,
-                                    )),
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            },
-                            child: SizedBox(
-                              height: 80,
-                              child: Card(
-                                elevation: 0,
-                                child: Row(
-                                  children: const [
-                                    Radio(
-                                      value: '',
-                                      groupValue: '',
-                                      onChanged: null,
-                                      activeColor: Colors.pink,
-                                    ),
-                                    Text(
-                                      // snapshot.data[index].todoTitle,
-                                      'Show todoTitle here',
-                                      style: TextStyle(
-                                          //decoration: TextDecoration.lineThrough,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
+                  Todo? todo = snapshot.data as Todo;
+                  return ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          height: 80,
+                          child: Card(
+                            elevation: 0,
+                            child: Row(
+                              children: [
+                                const Radio(
+                                  value: '',
+                                  groupValue: '',
+                                  onChanged: null,
+                                  activeColor: Colors.pink,
                                 ),
-                              ),
+                                Text(
+                                  todo.data![index].todoTitle!,
+                                  style: const TextStyle(
+                                      //decoration: TextDecoration.lineThrough,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const SizedBox(height: 5),
-                        itemCount: 6); //Pass the lenght here
-                  }),
-            ),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(height: 5),
+                      itemCount: todo.data!.length); //Pass the lenght here
+                }),
           ],
         ),
       ),

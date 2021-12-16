@@ -13,6 +13,7 @@ class TodoController {
       if (statusCode == 200) {
         //success
         _todo = Todo.fromJson(json.decode(response.body));
+        print(_todo!.data.toString());
       } else {
         //error
         _todo = null;
