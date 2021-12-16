@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/controller/todo_controller.dart';
 // import 'package:unicons/unicons.dart';
 
 class CreateTodoView extends StatefulWidget {
@@ -9,7 +10,17 @@ class CreateTodoView extends StatefulWidget {
 }
 
 class _CreateTodoViewState extends State<CreateTodoView> {
+  final TodoController _todoController = TodoController();
   String _value = "Select a  todo category";
+  final TextEditingController _todoTitleController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _todoController.getAllTodos();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +60,8 @@ class _CreateTodoViewState extends State<CreateTodoView> {
               children: [
                 Container(
                   margin: const EdgeInsets.fromLTRB(20, 80, 20, 20),
-                  child: TextField(
+                  child: TextFormField(
+                    controller: _todoTitleController,
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     style: const TextStyle(
@@ -72,7 +84,12 @@ class _CreateTodoViewState extends State<CreateTodoView> {
                           ),
                           borderRadius: BorderRadius.circular(30)),
                     ),
-                    //prefixIcon: Icon(Icons.person_pin_circle)
+                    //For validation
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter a title';
+                      }
+                    },
                   ),
                 ),
                 //Popup menu button
@@ -265,7 +282,33 @@ class _CreateTodoViewState extends State<CreateTodoView> {
                         const Color.fromRGBO(22, 106, 237, 1),
                       ),
                     ),
-                    onPressed: null,
+                    onPressed: () async {
+                      if (_todoTitleController.text.isNotEmpty) {
+                        String todoTitle = _todoTitleController.text;
+                        String category = _value;
+                        bool isSuccessful = await _todoController.createTodo(
+                            todoTitle: todoTitle, category: category);
+                        if (isSuccessful) {
+                          //isSuccessful
+                          SnackBar snackBar = const SnackBar(
+                            content: Text(
+                              'Todo created successfully',
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Navigator.of(context).pop();
+                        } else {
+                          //error
+                          SnackBar snackBar = const SnackBar(
+                            content: Text(
+                              'Ooops!, unable to create todo',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
+                    },
                     child: Row(
                       children: const [
                         Text(
